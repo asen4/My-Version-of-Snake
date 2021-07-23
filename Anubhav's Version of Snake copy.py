@@ -17,9 +17,7 @@ def instruction_screen():
     # The following line of code gives the window a caption. 
     pygame.display.set_caption("Anubhav's Version of Snake")
 
-    # This is a font we use to draw text on the screen (size 36)
     font = pygame.font.Font(None, 36)
-    # font = pygame.font.SysFont('Calibri', 30, True, False)   
     clock = pygame.time.Clock()
     done = False
     display_instructions = True
@@ -28,21 +26,15 @@ def instruction_screen():
     border = pygame.Surface([1800, 845])
     border.fill(BLACK)
      
-    # -------- Instruction Page Loop -----------
     while not done and display_instructions:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
      
-        # Set the screen background
         screen.fill(DARK_GREEN)
         screen.blit(border, (60, 60))
      
         if instruction_page == 1:
-            # Draw instructions, page 1
-            # This could also load an image created in another program.
-            # That could be both easier and more flexible.
-
             text = font.render("Anubhav's Version of Snake", True, WHITE)
             screen.blit(text, [860, 20])
      
@@ -76,10 +68,8 @@ def instruction_screen():
             text = font.render("Enjoy!", True, WHITE)
             screen.blit(text, [75, 460])
      
-        # Limit to 60 frames per second
         clock.tick(60)
      
-        # Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
 
         if instruction_page == 1:
@@ -101,7 +91,7 @@ def main():
     screen = pygame.display.set_mode([1920, 965])
 
     # The following line of code gives the window a caption. 
-    pygame.display.set_caption("Ankur's Version of Snake")
+    pygame.display.set_caption("Anubhav's Version of Snake")
     
     play_again = True
     while play_again:
@@ -111,14 +101,11 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     
-                    # Set the width and height of each snake segment
                     segment_width = 15
                     segment_height = 15
 
-                    # Margin between each segment
                     segment_margin = 3
                      
-                    # Set initial speed
                     x_change = segment_width + segment_margin
                     y_change = 0
 
@@ -127,17 +114,12 @@ def main():
                     
                     class Segment (pygame.sprite.Sprite):
                         """ Class to represent one segment of the snake. """
-                        # -- Methods
-                        # Constructor function
                         def __init__ (self, x, y):
-                            # Call the parent's constructor
                             super().__init__()
                      
-                            # Set height, width
                             self.image = pygame.Surface([segment_width, segment_height])
                             self.image.fill(GREEN)
                      
-                            # Make our top-left corner the passed-in location.
                             self.rect = self.image.get_rect()
                             self.rect.x = x
                             self.rect.y = y
@@ -163,29 +145,24 @@ def main():
                             # Default high score
                             high_score = 0
                          
-                            # Try to read the high score from a file
                             try:
                                 high_score_file = open("high_score_Snake.txt", "r")
                                 high_score = int(high_score_file.read())
                                 high_score_file.close()
                             except IOError:
-                                # Error reading file, no high score
                                 print("There is no high score yet.")
                             except ValueError:
-                                # There's a file there, but we don't understand the number.
-                                print("I'm confused. Starting with no high score.")
+                                print("I'm confused. Let's start with no high score.")
                          
                             return high_score
                          
                          
                         def save_high_score(new_high_score):
                             try:
-                                # Write the file to disk
                                 high_score_file = open("high_score_Snake.txt", "w")
                                 high_score_file.write(str(new_high_score))
                                 high_score_file.close()
                             except IOError:
-                                # Hm, can't write it.
                                 print("Unable to save the high score.")
 
                     class Obstacles (pygame.sprite.Sprite):
@@ -265,7 +242,6 @@ def main():
                     blueberry_container = pygame.sprite.GroupSingle()
                     obstacle_container = pygame.sprite.Group()
                      
-                    # Create an initial snake
                     snake_segments = []
                     for i in range(3):
                         x = 960 - (segment_width + segment_margin) * i
@@ -282,7 +258,6 @@ def main():
                         obstacle_array.append(obstacle)
                         obstacle_container.add(obstacle)
 
-                    # Creating the first apple
                     apple = Apple()
                     apple_container.add(apple)
                     
@@ -297,9 +272,6 @@ def main():
                     while not done:
                         
                         for event in pygame.event.get():
-                            # Set the speed based on the key pressed
-                            # We want the speed to be enough that we move a full
-                            # segment, plus the margin.
                             if event.type == pygame.KEYDOWN:
                                 if (event.key == pygame.K_LEFT or event.key == pygame.K_a) and direction != "right":
                                     x_change = (segment_width + segment_margin) * -1
@@ -320,17 +292,13 @@ def main():
                                 if event.key == pygame.K_p:
                                     Pause.pause()
                                      
-                        # Get rid of last segment of the snake
-                        # .pop() command removes last item in list
                         old_segment = snake_segments.pop()
                         all_snake_segments_list.remove(old_segment)
                      
-                        # Figure out where new segment will be
                         x = snake_segments[0].rect.x + x_change
                         y = snake_segments[0].rect.y + y_change
                         segment = Segment(x, y)
                      
-                        # Insert new segment into the list
                         snake_segments.insert(0, segment)
                         all_snake_segments_list.add(segment)
                         '''
@@ -360,25 +328,20 @@ def main():
                             #obstacle_array.insert(0, obstacle)
                             #obstacle_container.add(obstacle)
                         '''
+                        
                         # The following piece of code checks if the snake collides with the boundaries. 
                         coord_X = Segment.Coord_Snake_HeadX()
                         coord_Y = Segment.Coord_Snake_HeadY()
-                        # print("(",coord_X,", ",coord_Y,")")
                         if coord_X <= 55 or coord_X >= 1845 or coord_Y <= 55 or coord_Y >= 890:
                             border.fill(BLACK)
                             instruction_page = 1
                                  
-                            # -------- Instruction Page Loop -----------
                             while not done or display_instructions:                             
                                 # Set the screen background
                                 screen.fill(DARK_GREEN)
                                 screen.blit(border, (60, 60))
 
                                 if instruction_page == 1:
-                                    # Draw instructions, page 1
-                                    # This could also load an image created in another program.
-                                    # That could be both easier and more flexible.
-                                 
                                     text = font.render("GAME OVER! You lost because you collided with the boundaries!", True, WHITE)
                                     screen.blit(text, [75, 75])
 
@@ -388,12 +351,9 @@ def main():
                                     text = font.render("If you want to quit the game, press Q or the X button at the top-left corner of the window.", True, WHITE)
                                     screen.blit(text, [75, 145])
                    
-                                # Limit to 60 frames per second
                                 clock.tick(60)
                                  
-                                # Go ahead and update the screen with what we've drawn.
                                 pygame.display.update()
-        
 
                                 if instruction_page == 1:
                                     display_instructions = False
@@ -422,10 +382,6 @@ def main():
                                     screen.blit(border, (60, 60))
 
                                     if instruction_page == 1:
-                                        # Draw instructions, page 1
-                                        # This could also load an image created in another program.
-                                        # That could be both easier and more flexible.
-                                 
                                         text = font.render("GAME OVER! You lost because you collided with yourself!", True, WHITE)
                                         screen.blit(text, [75, 75])
 
@@ -435,13 +391,10 @@ def main():
                                         text = font.render("If you want to quit the game, press Q or the X button at the top-left corner of the window.", True, WHITE)
                                         screen.blit(text, [75, 145])
                    
-                                    # Limit to 60 frames per second
                                     clock.tick(60)
                                  
-                                    # Go ahead and update the screen with what we've drawn.
                                     pygame.display.update()
         
-
                                     if instruction_page == 1:
                                         display_instructions = False
 
@@ -468,13 +421,10 @@ def main():
                                 snake_segments.append(segment)
                                 all_snake_segments_list.add(segment)
 
-                        # Get the high score
                         high_score = High_Score.get_high_score()
                      
-                        # Get the score from the current game
                         current_score = len(snake_segments)
                     
-                        # See if we have a new high score
                         if current_score > high_score:
                             High_Score.save_high_score(current_score)
                         
@@ -500,16 +450,13 @@ def main():
                             old_segment = snake_segments.pop()
                             all_snake_segments_list.remove(old_segment)
                      
-                            # Figure out where new segment will be
                             x = snake_segments[0].rect.x + x_change
                             y = snake_segments[0].rect.y + y_change
                             segment = Segment(x, y)
                      
-                            # Insert new segment into the list
                             snake_segments.insert(0, segment)
                             all_snake_segments_list.add(segment)
                             
-                        
                         if pygame.sprite.spritecollide(snake_segments[0], blueberry_container, False):
                             while pygame.sprite.groupcollide(blueberry_container, all_snake_segments_list, False, False) or pygame.sprite.groupcollide(obstacle_container, blueberry_container, False, False):
                                 blueberry = Blueberry()
@@ -519,16 +466,11 @@ def main():
                                     segment = Segment(x, y)
                                     snake_segments.append(segment)
                                     all_snake_segments_list.add(segment)
-                           
-
-                        
-                        # Draw Everything
-                        # Clear Screen
+       
                         screen.fill(DARK_GREEN)
 
                         font = pygame.font.Font(None, 36)
-                        # font = pygame.font.SysFont('Calibri', 30, True, False)
-                        text_title = font.render("Ankur's Version of Snake", True, WHITE)
+                        text_title = font.render("Anubhav's Version of Snake", True, WHITE)
                         text_score = font.render("Current Score: {0}".format(len(snake_segments)), True, WHITE)
                         text_high_score = font.render("High Score: {0}".format(high_score), True, WHITE)
                         
@@ -542,10 +484,8 @@ def main():
                         blueberry_container.draw(screen)
                         obstacle_container.draw(screen)
                         
-                        # Flip and Update Screen
                         pygame.display.flip()
                      
-                        # Pause
                         clock.tick(15)
                         
                 elif event.key == pygame.K_q:
