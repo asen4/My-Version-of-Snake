@@ -15,7 +15,7 @@ def instruction_screen():
     screen = pygame.display.set_mode([1920, 965])
 
     # The following line of code gives the window a caption. 
-    pygame.display.set_caption("Ankur's Version of Snake")
+    pygame.display.set_caption("Anubhav's Version of Snake")
 
     # This is a font we use to draw text on the screen (size 36)
     font = pygame.font.Font(None, 36)
